@@ -1,7 +1,7 @@
 {
-  "name": "bg-tint-marketplace",
+  "name": "session-hues-cc-marketplace",
   "owner": { "name": "Ashok Kallarakuzhi" },
   "plugins": [
-    { "name": "bg-tint", "source": "./", "description": "Random per-session tint for Claude Code transcript rows" }
+    { "name": "session-hues-cc", "source": "./", "description": "Random color theme per Claude Code session, plus an animated Star Wars text-art spinner" }
   ]
 }

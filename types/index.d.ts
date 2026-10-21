@@ -8,6 +8,6 @@ export type Palette = {
 
 declare module 'claude-code' {
   interface PluginState {
-    'bg-tint': { palette: Palette | null; frame: number }
+    'session-hues-cc': { palette: Palette | null; frame: number }
   }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "bg-tint",
-  "version": "0.3.0",
-  "description": "Random per-session tint for transcript rows, tool rows, accent bar and spinner",
+  "name": "session-hues-cc",
+  "version": "0.4.0",
+  "description": "Random color theme per Claude Code session, plus an animated Star Wars text-art spinner",
   "author": { "name": "Ashok Kallarakuzhi" },
   "types": "./types/index.d.ts"
 }

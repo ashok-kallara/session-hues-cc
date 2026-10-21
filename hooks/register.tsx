@@ -3,8 +3,8 @@ import type { Register } from 'claude-code'
 
 import type { Palette } from '../types'
 
-const palette = atom({ plugin: 'bg-tint', key: 'palette' } as const, null)
-const frame = atom({ plugin: 'bg-tint', key: 'frame' } as const, 0)
+const palette = atom({ plugin: 'session-hues-cc', key: 'palette' } as const, null)
+const frame = atom({ plugin: 'session-hues-cc', key: 'frame' } as const, 0)
 
 const HUE_RANGE = 360
 const USER_HUE_SHIFT = 25

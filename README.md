@@ -1,4 +1,4 @@
-# bg-tint
+# session-hues-cc
 
 A Claude Code mod that gives every new session a random color theme.
 
@@ -19,33 +19,33 @@ The lightness values assume a dark terminal theme.
 Recommended: install it as a user-level plugin from this folder. No shell
 profile changes needed, and it loads in every session.
 
-    claude plugin marketplace add ~/work/dev/bg-tint-mod
-    claude plugin install bg-tint@bg-tint-marketplace
+    claude plugin marketplace add ~/work/dev/session-hues-cc
+    claude plugin install session-hues-cc@session-hues-cc-marketplace
 
 Start a new `claude` session. Each session gets its own random hue.
 
 The marketplace points at this folder, so edits here are what Claude reads.
-After editing, refresh with `claude plugin marketplace update bg-tint-marketplace`
+After editing, refresh with `claude plugin marketplace update session-hues-cc-marketplace`
 and restart the session.
 
 ### Other ways
 
 Try it for one session without installing:
 
-    claude --plugin-dir ~/work/dev/bg-tint-mod
+    claude --plugin-dir ~/work/dev/session-hues-cc
 
 Install from a git host after pushing this repo:
 
     claude plugin marketplace add <owner>/<repo>
-    claude plugin install bg-tint@bg-tint-marketplace
+    claude plugin install session-hues-cc@session-hues-cc-marketplace
 
 ## Check it works
 
-    claude plugin validate ~/work/dev/bg-tint-mod
+    claude plugin validate ~/work/dev/session-hues-cc
 
     claude plugin list
 
-`bg-tint@bg-tint-marketplace` should show as enabled.
+`session-hues-cc@session-hues-cc-marketplace` should show as enabled.
 
 ## Tweak it
 
@@ -54,5 +54,5 @@ All colors and spacing are constants at the top of `hooks/register.tsx`
 
 ## Remove
 
-    claude plugin uninstall bg-tint@bg-tint-marketplace
-    claude plugin marketplace remove bg-tint-marketplace
+    claude plugin uninstall session-hues-cc@session-hues-cc-marketplace
+    claude plugin marketplace remove session-hues-cc-marketplace
