@@ -16,44 +16,43 @@ The lightness values assume a dark terminal theme.
 
 ## Install
 
-### Option A: load from this folder (simplest, local)
+Recommended: install it as a user-level plugin from this folder. No shell
+profile changes needed, and it loads in every session.
 
-For one session:
+    claude plugin marketplace add ~/work/dev/bg-tint-mod
+    claude plugin install bg-tint@bg-tint-marketplace
+
+Start a new `claude` session. Each session gets its own random hue.
+
+The marketplace points at this folder, so edits here are what Claude reads.
+After editing, refresh with `claude plugin marketplace update bg-tint-marketplace`
+and restart the session.
+
+### Other ways
+
+Try it for one session without installing:
 
     claude --plugin-dir ~/work/dev/bg-tint-mod
 
-For every session, add the folder to your shell profile.
+Install from a git host after pushing this repo:
 
-fish (`~/.config/fish/config.fish`):
-
-    set -gx CLAUDE_CODE_PLUGIN_DIRS ~/work/dev/bg-tint-mod
-
-bash/zsh (`~/.zshrc`):
-
-    export CLAUDE_CODE_PLUGIN_DIRS=~/work/dev/bg-tint-mod
-
-Then start a new `claude` session.
-
-### Option B: install as a plugin from a marketplace
-
-Push this folder to a git repo (it already contains `.claude-plugin/marketplace.json`), then:
-
-    /plugin install bg-tint --marketplace <owner>/<repo>
+    claude plugin marketplace add <owner>/<repo>
+    claude plugin install bg-tint@bg-tint-marketplace
 
 ## Check it works
 
     claude plugin validate ~/work/dev/bg-tint-mod
 
-In a session, mods may ask once: "Turn on the mods Claude writes in this session?"
-That prompt applies to mods Claude writes in-session, not to mods loaded from
-`--plugin-dir`.
+    claude plugin list
+
+`bg-tint@bg-tint-marketplace` should show as enabled.
 
 ## Tweak it
 
 All colors and spacing are constants at the top of `hooks/register.tsx`
-(saturation, lightness, `USER_HUE_SHIFT`, `BAND_GAP`). Edits hot-reload in a
-session that has the folder loaded.
+(saturation, lightness, `USER_HUE_SHIFT`, `BAND_GAP`). 
 
 ## Remove
 
-Unset `CLAUDE_CODE_PLUGIN_DIRS` (or delete the line from your profile) and delete this folder.
+    claude plugin uninstall bg-tint@bg-tint-marketplace
+    claude plugin marketplace remove bg-tint-marketplace
