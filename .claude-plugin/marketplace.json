@@ -1,0 +1,7 @@
+{
+  "name": "bg-tint-marketplace",
+  "owner": { "name": "Ashok Kallarakuzhi" },
+  "plugins": [
+    { "name": "bg-tint", "source": "./", "description": "Random per-session tint for Claude Code transcript rows" }
+  ]
+}
