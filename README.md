@@ -8,7 +8,7 @@ A Claude Code mod that gives every new session a random color theme.
 - Your prompts: tinted band with a bright accent bar on the left.
 - Claude's replies: tinted band in the base hue, with a gap between bands.
 - Tool calls and results: a faint, darker tint.
-- Spinner: drawn in a light tint of the prompt hue.
+- Spinner: a text-art Star Wars character (Yoda, Vader, a stormtrooper, R2-D2, Chewbacca, C-3PO, BB-8) that runs back and forth along a trail, swapping each lap,, in a light tint of the prompt hue.
 
 It tints the transcript rows only. It cannot change the terminal's own
 background (the empty area around the rows); use your terminal's profile for that.

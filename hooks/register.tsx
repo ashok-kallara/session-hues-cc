@@ -4,6 +4,7 @@ import type { Register } from 'claude-code'
 import type { Palette } from '../types'
 
 const palette = atom({ plugin: 'bg-tint', key: 'palette' } as const, null)
+const frame = atom({ plugin: 'bg-tint', key: 'frame' } as const, 0)
 
 const HUE_RANGE = 360
 const USER_HUE_SHIFT = 25
@@ -18,6 +19,43 @@ const USER_LIGHTNESS = 20
 const ASSISTANT_LIGHTNESS = 13
 const TOOL_LIGHTNESS = 10
 const BAND_GAP = 1
+const FRAME_MS = 110
+const TRACK_WIDTH = 7
+const COLUMNS_PER_STEP = 2
+const TRAIL = '·•'
+// Text-art takes on Star Wars characters (Unicode has no real ones). A new
+// character takes over each time the runner completes a lap of the track.
+const STAR_WARS_FACES: readonly string[] = [
+  '⊂(°‿°)⊃', // Yoda
+  '[▓▀▓]', // Darth Vader
+  '[◉_◉]', // Stormtrooper
+  '(•o•)=', // R2-D2
+  'ʕ•ᴥ•ʔ', // Chewbacca
+  '[ô_ô]', // C-3PO
+  '(◎)●', // BB-8
+  '/(▓)\\', // Lightsaber duel
+]
+const FACE_WIDTH = Math.max(...STAR_WARS_FACES.map(face => face.length))
+const LINE_WIDTH =
+  (TRACK_WIDTH - 1) * COLUMNS_PER_STEP + TRAIL.length + FACE_WIDTH
+
+// One lap is there-and-back across the track; the face runs ahead of a trail.
+const LAP_FRAMES = (TRACK_WIDTH - 1) * 2
+
+const spinnerFrame = (tick: number): string => {
+  const lap = Math.floor(tick / LAP_FRAMES)
+  const step = tick % LAP_FRAMES
+  const goingRight = step < TRACK_WIDTH
+  const position = goingRight ? step : LAP_FRAMES - step
+  const face = STAR_WARS_FACES[lap % STAR_WARS_FACES.length]
+  const indent = ' '.repeat(position * COLUMNS_PER_STEP)
+  const trail = goingRight ? TRAIL : [...TRAIL].reverse().join('')
+  const line = goingRight
+    ? `${indent}${trail}${face}`
+    : `${indent}${face}${trail}`
+
+  return line.padEnd(LINE_WIDTH)
+}
 
 const hslToHex = (hue: number, saturation: number, lightness: number) => {
   const s = saturation / 100
@@ -48,6 +86,8 @@ export const register: Register = on => {
     if ((await read($, palette)) === null) {
       await update($, palette, () => randomPalette())
     }
+
+    $.clock.every(FRAME_MS, () => update($, frame, tick => tick + 1))
 
     return next(e)
   })
@@ -132,9 +172,10 @@ export const register: Register = on => {
 
     const { Text } = $.ui.resolve(e)
     const label = e.props.message ?? e.props.word
+    const tick = await read($, frame)
 
     return (
-      <Text color={colors.accent}>{`✻ ${label}${e.props.suffix}`}</Text>
+      <Text color={colors.accent}>{`${spinnerFrame(tick)} ${label}${e.props.suffix}`}</Text>
     )
   })
 }
