@@ -1,5 +1,5 @@
 import { atom, read, update } from 'claude-code'
-import type { Register } from 'claude-code'
+import type { EngineInterface, Register, Timer } from 'claude-code'
 
 import type { Palette } from '../types'
 
@@ -81,13 +81,48 @@ const randomPalette = (): Palette => {
   }
 }
 
+// session.start fires once per process, never after /clear, which moves the
+// process to a new session. Seeding and ticking therefore also run from events
+// that do fire after a clear, and are safe to run any number of times.
+const ticker: { timer: Timer | null } = { timer: null }
+
+const ensureRunning = async ($: EngineInterface): Promise<void> => {
+  if ((await read($, palette)) === null) {
+    await update($, palette, () => randomPalette())
+  }
+
+  if (ticker.timer === null) {
+    ticker.timer = $.clock.every(FRAME_MS, () =>
+      update($, frame, tick => tick + 1),
+    )
+  }
+}
+
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
-    if ((await read($, palette)) === null) {
-      await update($, palette, () => randomPalette())
-    }
+    await ensureRunning($)
 
-    $.clock.every(FRAME_MS, () => update($, frame, tick => tick + 1))
+    return next(e)
+  })
+
+  on('prompt.submit', async ($, e, next) => {
+    await ensureRunning($)
+
+    return next(e)
+  })
+
+  on('turn.start', async ($, e, next) => {
+    await ensureRunning($)
+
+    return next(e)
+  })
+
+  // Drop the old session's timer; the next prompt starts one for the new session.
+  on('session.end', async ($, e, next) => {
+    if (e.reason === 'clear' && ticker.timer !== null) {
+      ticker.timer.cancel()
+      ticker.timer = null
+    }
 
     return next(e)
   })

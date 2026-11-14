@@ -1,6 +1,6 @@
 {
   "name": "session-hues-cc",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Random color theme per Claude Code session, plus an animated Star Wars text-art spinner",
   "author": { "name": "Ashok Kallarakuzhi" },
   "types": "./types/index.d.ts"
